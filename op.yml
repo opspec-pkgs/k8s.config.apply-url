@@ -1,0 +1,26 @@
+description: applies a k8s configuration URL to a cluster
+name: github.com/opspec-pkgs/k8s.config.apply-url
+inputs:
+  kubeConfig:
+    file:
+      description: |
+        config for talking to k8s cluster; typically generated via `kubectl config` subcommands
+        see [k8s docs for more info](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/)
+  config:
+    string:
+      description: k8s configuration URL to apply
+  namespace:
+    string:
+      description: namespace to target
+      default: default
+version: 1.0.0
+run:
+  container:
+    image: { ref: 'opspecpkgs/k8s.config.apply-url:1.0.0' }
+    cmd: [ /cmd.sh ]
+    files:
+      /cmd.sh:
+      /root/.kube/config: $(kubeConfig)
+    envVars:
+      namespace:
+      config:
